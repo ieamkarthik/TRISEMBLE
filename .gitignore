@@ -1,0 +1,9 @@
+*.pt
+*.pth
+*.mp4
+*.avi
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.log
