@@ -2,21 +2,22 @@
 
 A three-model ensemble tracker for the [VOTS2026](https://www.votchallenge.net/vots2026/) (Visual Object Tracking and Segmentation) challenge, combining SAM3, DAM4SAM, and Cutie to produce robust per-object segmentation masks across long, difficult video sequences.
 
-**Final public leaderboard score: Q = 0.50**
+**Official VOTS2026 leaderboard result: Q = 0.15**
+**Post-deadline fix (see below): Q = 0.48 — verified locally, not an official VOTS2026 score**
 
 ## Overview
 
 TRISEMBLE runs three independent tracking/segmentation models in parallel on each frame and fuses their outputs into a single mask per tracked object:
 
 - **SAM3** — runs as a persistent inference daemon (kept resident in GPU memory across the sequence rather than reloaded per frame), providing strong general-purpose segmentation.
-- **DAM4SAM** (DAM4SAM/SAM2-based) — handles temporally consistent mask propagation between frames.
+- **DAM4SAM** (DAM4SAM/SAM2-based) — handles temporally consistent mask propagation between frames, with distractor-aware memory to resist visually similar lookalike objects.
 - **Cutie** — a memory-based video object segmentation model, adding a third independent vote on object identity and extent.
 
 An `ensemble_vot_wrapper.py` implements the VOT/TraX protocol and coordinates per-frame calls to all three components; `fusion_engine.py` combines their outputs into the final prediction.
 
 ## Development history
 
-TRISEMBLE went through several named iterations before reaching its final score:
+TRISEMBLE went through several named iterations before the competition deadline:
 
 | Stage | Tracker | Configuration | Q |
 |---|---|---|---|
@@ -24,10 +25,13 @@ TRISEMBLE went through several named iterations before reaching its final score:
 | 2 | SAMBA-D4 | SAM3 + DAM4SAM (baseline) | 0.05 |
 | 3 | TRIDENT | SAM2 (swapped) + DAM4SAM + Cutie | 0.09 |
 | 4 | TRIDENT | SAM2 + DAM4SAM + Cutie (optimized) | 0.14 |
-| 5 | TRISEMBLE | SAM2 + DAM4SAM + Cutie (renamed, optimized) | 0.15 |
-| 6 | TRISEMBLE | Backbone reverted to SAM3 + foreground/background fix | **0.50** |
+| 5 | TRISEMBLE | SAM2 + DAM4SAM + Cutie (renamed, optimized) | **0.15 — official VOTS2026 submission (deadline)** |
 
-The backbone was swapped from SAM3 to SAM2 midway through development for better compatibility with DAM4SAM, then reverted back to SAM3 once it was found to outperform SAM2 after other bugs were fixed. The final jump in score came from combining that reversion with a fix to a mask-polarity bug where segmentation was occasionally landing on the background instead of the foreground object.
+The backbone was swapped from SAM3 to SAM2 midway through development for better compatibility with DAM4SAM. At the point the competition deadline closed, the score stood at **Q = 0.15** — this is TRISEMBLE's official result on the VOTS2026 leaderboard.
+
+### Post-deadline fix (not an official score)
+
+After the deadline, the underlying bug was root-caused: segmentation was, in a meaningful fraction of frames, landing on the image background instead of the intended foreground object. Fixing that mask-polarity bug, combined with reverting the backbone from SAM2 back to SAM3 (found to outperform SAM2 once other issues were resolved), raised the score to **Q = 0.48** when reproduced locally. This is a genuine, verified result and the code in this repo reflects it — but because it was found after the scoring window closed, it is **not part of TRISEMBLE's official VOTS2026 record** and does not appear on the leaderboard, but can be viewed on the VOTS Benchmark on the date of July 1st 2026.
 
 ## Setup & Running
 
@@ -40,13 +44,11 @@ The backbone was swapped from SAM3 to SAM2 midway through development for better
 ```
 4. Note: `timeout = 7200` (2 hours) reflects the runtime cost of running three models per frame — expect long evaluation times on long sequences.
 
+**Note on reproducibility:** the code in this repo reflects the post-deadline fixed state (Q = 0.48 locally), not the exact configuration that scored Q = 0.15 on the official leaderboard.
+
 ## Requirements
 
 Evaluated using the [VOT toolkit](https://github.com/votchallenge/toolkit) against the VOTS2026 dataset. See `trackers.ini` for the exact command used to invoke the tracker.
-
-## Acknowledgments
-
-Developed as part of a summer research internship at the Indian Institute of Technology Tirupati, under the supervision of Prof. Rama Krishna Sai Gorthi.
 
 ## Model Credits
 
@@ -62,4 +64,6 @@ An earlier iteration also experimented with **SAMBAMOTR**, a Mamba-based multi-o
 
 If you use TRISEMBLE or build on it, please also cite the underlying models above alongside the VOTS2026 benchmark itself.
 
+## Acknowledgments
 
+Developed as part of a summer research internship at the Indian Institute of Technology Tirupati, under the supervision of Prof. Rama Krishna Sai Gorthi.
