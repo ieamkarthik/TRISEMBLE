@@ -3,7 +3,8 @@
 A three-model ensemble tracker for the [VOTS2026](https://www.votchallenge.net/vots2026/) (Visual Object Tracking and Segmentation) challenge, combining SAM3, DAM4SAM, and Cutie to produce robust per-object segmentation masks across long, difficult video sequences.
 
 **Official VOTS2026 competition-phase submission: Q = 0.15** (pre-deadline entry, eligible for results-paper co-authorship)
-**Post-deadline resubmission to the VOTS2026 evaluation server (July 1, 2026): Q = 0.48** — a genuine, server-scored result, but submitted after the challenge deadline
+
+**Post-deadline resubmission to the VOTS Benchmark server (July 1, 2026): Q = 0.48** — a genuine, server-scored result, but submitted after the challenge deadline
 
 ## Overview
 
