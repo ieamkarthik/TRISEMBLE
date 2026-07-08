@@ -47,3 +47,19 @@ Evaluated using the [VOT toolkit](https://github.com/votchallenge/toolkit) again
 ## Acknowledgments
 
 Developed as part of a summer research internship at the Indian Institute of Technology Tirupati, under the supervision of Prof. Rama Krishna Sai Gorthi.
+
+## Model Credits
+
+TRISEMBLE builds directly on three published research models. None of the underlying model weights or architectures are original to this repository — full credit for the segmentation/tracking models themselves goes to their original authors:
+
+- **SAM 3 (Segment Anything Model 3)** — Meta AI (Carion et al., 2025), *"SAM 3: Segment Anything with Concepts."* A unified image- and video-level detector/tracker sharing a single backbone. [Paper](https://arxiv.org/abs/2511.16719) · [Code](https://github.com/facebookresearch/sam3)
+
+- **DAM4SAM (Distractor-Aware Memory for SAM2)** — Videnović, Lukežič, and Kristan, *"A Distractor-Aware Memory for Visual Object Tracking with SAM2"* (CVPR 2025) / *"Distractor-Aware Memory-Based Visual Object Tracking"* (IJCV 2026). A plug-in memory module for SAM2 that improves robustness against visually similar distractor objects — the core problem TRISEMBLE was built to handle on VOTS sequences. [Paper](https://arxiv.org/abs/2509.13864) · [Code](https://github.com/jovanavidenovic/DAM4SAM)
+
+- **Cutie** — Cheng, Oh, Price, Lee, and Schwing, *"Putting the Object Back into Video Object Segmentation"* (CVPR 2024 Highlight). A video object segmentation network using object-level (rather than purely pixel-level) memory reading, providing TRISEMBLE's third independent segmentation vote. [Paper](https://arxiv.org/abs/2310.12982) · [Code](https://github.com/hkchengrex/Cutie)
+
+An earlier iteration also experimented with **SAMBAMOTR**, a Mamba-based multi-object tracker, before it was abandoned in favor of the SAM3/DAM4SAM/Cutie combination due to integration issues (see Development History above).
+
+If you use TRISEMBLE or build on it, please also cite the underlying models above alongside the VOTS2026 benchmark itself.
+
+
