@@ -2,8 +2,8 @@
 
 A three-model ensemble tracker for the [VOTS2026](https://www.votchallenge.net/vots2026/) (Visual Object Tracking and Segmentation) challenge, combining SAM3, DAM4SAM, and Cutie to produce robust per-object segmentation masks across long, difficult video sequences.
 
-**Official VOTS2026 leaderboard result: Q = 0.15**
-**Post-deadline fix (see below): Q = 0.48 — verified locally, not an official VOTS2026 score**
+**Official VOTS2026 competition-phase submission: Q = 0.15** (pre-deadline entry, eligible for results-paper co-authorship)
+**Post-deadline resubmission to the VOTS2026 evaluation server (July 1, 2026): Q = 0.48** — a genuine, server-scored result, but submitted after the challenge deadline
 
 ## Overview
 
@@ -25,13 +25,13 @@ TRISEMBLE went through several named iterations before the competition deadline:
 | 2 | SAMBA-D4 | SAM3 + DAM4SAM (baseline) | 0.05 |
 | 3 | TRIDENT | SAM2 (swapped) + DAM4SAM + Cutie | 0.09 |
 | 4 | TRIDENT | SAM2 + DAM4SAM + Cutie (optimized) | 0.14 |
-| 5 | TRISEMBLE | SAM2 + DAM4SAM + Cutie (renamed, optimized) | **0.15 — official VOTS2026 submission (deadline)** |
+| 5 | TRISEMBLE | SAM2 + DAM4SAM + Cutie (renamed, optimized) | **0.15 — official VOTS2026 competition-phase submission (pre-deadline)** |
 
-The backbone was swapped from SAM3 to SAM2 midway through development for better compatibility with DAM4SAM. At the point the competition deadline closed, the score stood at **Q = 0.15** — this is TRISEMBLE's official result on the VOTS2026 leaderboard.
+The backbone was swapped from SAM3 to SAM2 midway through development for better compatibility with DAM4SAM. At the point the competition deadline closed, the score stood at **Q = 0.15** — this is TRISEMBLE's official entry for the VOTS2026 challenge and the one eligible for results-paper co-authorship.
 
-### Post-deadline fix (not an official score)
+### Post-deadline fix (server-scored, not the competition entry)
 
-After the deadline, the underlying bug was root-caused: segmentation was, in a meaningful fraction of frames, landing on the image background instead of the intended foreground object. Fixing that mask-polarity bug, combined with reverting the backbone from SAM2 back to SAM3 (found to outperform SAM2 once other issues were resolved), raised the score to **Q = 0.48** when reproduced locally. This is a genuine, verified result and the code in this repo reflects it — but because it was found after the scoring window closed, it is **not part of TRISEMBLE's official VOTS2026 record** and does not appear on the leaderboard, but can be viewed on the VOTS Benchmark on the date of July 1st 2026.
+After the deadline, the underlying bug was root-caused: segmentation was, in a meaningful fraction of frames, landing on the image background instead of the intended foreground object. Fixing that mask-polarity bug, combined with reverting the backbone from SAM2 back to SAM3 (found to outperform SAM2 once other issues were resolved), raised the score to **Q = 0.48**, confirmed by resubmitting to the official VOTS2026 evaluation server on **July 1, 2026** — VOTS reopens its evaluation server for post-challenge submissions once the competition deadline passes. This is a genuine, server-scored result, and the code in this repo reflects it — but because the resubmission happened after the challenge's scoring window closed, it was not the entry in contention for results-paper co-authorship (that's the Q = 0.15 pre-deadline submission above).
 
 ## Setup & Running
 
@@ -44,7 +44,7 @@ After the deadline, the underlying bug was root-caused: segmentation was, in a m
 ```
 4. Note: `timeout = 7200` (2 hours) reflects the runtime cost of running three models per frame — expect long evaluation times on long sequences.
 
-**Note on reproducibility:** the code in this repo reflects the post-deadline fixed state (Q = 0.48 locally), not the exact configuration that scored Q = 0.15 on the official leaderboard.
+**Note on reproducibility:** the code in this repo reflects the post-deadline fixed state (Q = 0.48, server-scored July 1, 2026), not the exact configuration that scored Q = 0.15 on the pre-deadline competition entry.
 
 ## Requirements
 
