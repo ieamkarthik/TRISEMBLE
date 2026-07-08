@@ -29,16 +29,6 @@ TRISEMBLE went through several named iterations before reaching its final score:
 
 The backbone was swapped from SAM3 to SAM2 midway through development for better compatibility with DAM4SAM, then reverted back to SAM3 once it was found to outperform SAM2 after other bugs were fixed. The final jump in score came from combining that reversion with a fix to a mask-polarity bug where segmentation was occasionally landing on the background instead of the foreground object.
 
-## Repository structure
-trackers/
-└── TRISEMBLE/
-├── ensemble_vot_wrapper.py   # VOT/TraX protocol entry point
-├── fusion_engine.py          # Combines per-model outputs into final mask
-├── cutie_server.py           # Cutie inference component
-├── d4sm_server.py            # DAM4SAM inference component
-├── sam3_client.py            # Client for the persistent SAM3 daemon
-└── vot_helper.py             # Shared VOT toolkit utilities
-
 ## Requirements
 
 Evaluated using the [VOT toolkit](https://github.com/votchallenge/toolkit) against the VOTS2026 dataset. See `trackers.ini` for the exact command used to invoke the tracker.
