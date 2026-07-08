@@ -29,6 +29,17 @@ TRISEMBLE went through several named iterations before reaching its final score:
 
 The backbone was swapped from SAM3 to SAM2 midway through development for better compatibility with DAM4SAM, then reverted back to SAM3 once it was found to outperform SAM2 after other bugs were fixed. The final jump in score came from combining that reversion with a fix to a mask-polarity bug where segmentation was occasionally landing on the background instead of the foreground object.
 
+## Setup & Running
+
+1. Clone this repo and set up a Python environment with the dependencies for SAM3, DAM4SAM, and Cutie installed.
+2. Edit `trackers.ini` — replace `<path-to-repo>` with the absolute path to where you cloned this repo, and `<path-to-your-conda-env>` with your environment's `bin/` directory.
+3. Run evaluation with the [VOT toolkit](https://github.com/votchallenge/toolkit):
+```bash
+   vot evaluate TRISEMBLE
+   vot analyze TRISEMBLE
+```
+4. Note: `timeout = 7200` (2 hours) reflects the runtime cost of running three models per frame — expect long evaluation times on long sequences.
+
 ## Requirements
 
 Evaluated using the [VOT toolkit](https://github.com/votchallenge/toolkit) against the VOTS2026 dataset. See `trackers.ini` for the exact command used to invoke the tracker.
